@@ -4,7 +4,8 @@ from selenium.webdriver.common.keys import Keys
 import time
 from selenium.common.exceptions import NoSuchElementException
 
-
+USERNAME = "@gmail.com"
+PASSWORD = "pswd"
 
 # keep chrome open after program finishes
 chrome_options = webdriver.ChromeOptions()
@@ -14,21 +15,26 @@ chrome_options.add_experimental_option("detach", True)
 driver = webdriver.Chrome(options=chrome_options)
 
 
-def apply_for_job(job_item):
+def get_job(job_item):
     link = job_item.get_attribute('href')
-    print(link)
-    time.sleep(3)
+    if "www.linkedin.com" in link:
+        job_item.click()
+        apply_button = driver.find_element(By.CLASS_NAME, value="jobs-apply-button")
+        apply_button.click()
+        next_button = driver.find_element(By.CLASS_NAME, value="artdeco-button__text")
+        next_button.click()
+        time.sleep(5)
 
 
 # navigate to LinkedIn
 driver.get("https://www.linkedin.com/jobs/search/"
-           "?currentJobId=3786715581&distance=25.0"
-           "&f_AL=true&geoId=103644278"
+           "?currentJobId=3760383701&distance=25.0"
+           "&f_AL=true&f_E=1&geoId=103644278"
            "&keywords=software%20developer%20intern"
            "&origin=JOB_SEARCH_PAGE_JOB_FILTER")
 
 time.sleep(2)
-sign_in_button = driver.find_element(By.CLASS_NAME, value="nav__button-secondary")
+sign_in_button = driver.find_element(By.LINK_TEXT, value="Sign in")
 sign_in_button.click()
 
 time.sleep(1)
@@ -42,6 +48,6 @@ job_list = driver.find_elements(By.CSS_SELECTOR, value=".scaffold-layout__list-c
 print(job_list)
 
 for job in job_list:
-    apply_for_job(job)
+    get_job(job)
 
 #ember178#ember178
